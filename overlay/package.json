@@ -1,0 +1,12 @@
+{
+  "name": "highlight-reviews-overlay",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/overlay.ts --bundle --format=iife --global-name=HighlightReviewsOverlay --target=es2017 --outfile=../server/public/overlay.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0",
+    "typescript": "4.9.5"
+  }
+}

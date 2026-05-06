@@ -1,0 +1,13 @@
+{
+  "name": "highlight-reviews-server",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.2.0",
+    "typescript": "4.9.5"
+  }
+}

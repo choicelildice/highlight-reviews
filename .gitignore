@@ -1,0 +1,9 @@
+.vercel
+.env.demo
+.env*.local
+node_modules
+build
+dist
+server/public/index.html
+server/public/overlay.js
+server/public/*.bak

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Highlight Reviews — A Contentful App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ctfl-blue:      #1770e5;
+      --ctfl-blue-dark: #0f52b6;
+      --ctfl-yellow:    #ffda00;
+      --ctfl-red:       #e44f20;
+      --ctfl-green:     #00c459;
+      --ctfl-text:      #1b1b1b;
+      --ctfl-muted:     #4b4f54;
+      --ctfl-border:    #dde5ec;
+      --ctfl-bg:        #eff2f6;
+      --ctfl-white:     #ffffff;
+      --radius-sm:      6px;
+      --radius-md:      10px;
+      --radius-lg:      16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ctfl-text);
+      background: var(--ctfl-white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ctfl-white);
+      border-bottom: 1px solid var(--ctfl-border);
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-left { display: flex; align-items: center; gap: 10px; }
+    .nav-logo { height: 36px; width: auto; display: block; }
+    .nav-divider {
+      width: 1px; height: 18px; background: var(--ctfl-border);
+    }
+    .nav-app {
+      font-size: 14px; font-weight: 500; color: var(--ctfl-muted);
+    }
+    .nav-badge {
+      background: #eef5ff; color: var(--ctfl-blue);
+      font-size: 11px; font-weight: 600; padding: 4px 10px;
+      border-radius: 100px; letter-spacing: 0.3px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--ctfl-white);
+      color: var(--ctfl-text);
+      padding: 100px 40px 96px;
+      text-align: center;
+      border-bottom: 1px solid var(--ctfl-border);
+    }
+    .hero-inner { max-width: 760px; margin: 0 auto; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #eef5ff;
+      border: 1px solid #c5d9f8;
+      color: var(--ctfl-blue);
+      font-size: 12px; font-weight: 600; letter-spacing: 0.8px;
+      text-transform: uppercase; padding: 6px 14px;
+      border-radius: 100px; margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5.5vw, 60px); font-weight: 800;
+      line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 24px;
+      color: var(--ctfl-text);
+    }
+    .hero p {
+      font-size: 18px; line-height: 1.7;
+      color: var(--ctfl-muted);
+      max-width: 560px; margin: 0 auto 40px;
+    }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center;
+      padding: 13px 24px; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: all 0.15s;
+      cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--ctfl-blue); color: var(--ctfl-white);
+    }
+    .btn-primary:hover { background: var(--ctfl-blue-dark); transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--ctfl-white);
+      border: 1px solid var(--ctfl-border);
+      color: var(--ctfl-text);
+    }
+    .btn-secondary:hover { background: var(--ctfl-bg); }
+
+    /* ── Sections ── */
+    .section { padding: 88px 40px; }
+    .section-inner { max-width: 1040px; margin: 0 auto; }
+    .section-alt { background: var(--ctfl-bg); }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--ctfl-blue);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: clamp(26px, 3vw, 36px); font-weight: 800;
+      letter-spacing: -0.8px; line-height: 1.15;
+      color: var(--ctfl-text); margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 17px; color: var(--ctfl-muted);
+      max-width: 560px; line-height: 1.7; margin-bottom: 56px;
+    }
+    h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--ctfl-text); }
+    p { color: var(--ctfl-muted); margin-bottom: 0; line-height: 1.7; }
+
+    /* ── Feature grid ── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--ctfl-white);
+      border: 1px solid var(--ctfl-border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .feature-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-md);
+      background: #eef5ff;
+      display: flex; align-items: center;
+      justify-content: center; font-size: 22px; margin-bottom: 18px;
+    }
+
+    /* ── How it works ── */
+    .steps { counter-reset: steps; display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 28px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--ctfl-border);
+      counter-increment: steps;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      flex-shrink: 0;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--ctfl-blue); color: var(--ctfl-white);
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-num::before { content: counter(steps); }
+    .step-body { padding-top: 10px; }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 0; }
+    .faq-item {
+      border-bottom: 1px solid var(--ctfl-border);
+      padding: 28px 0;
+    }
+    .faq-item:first-child { border-top: 1px solid var(--ctfl-border); }
+    .faq-item h3 { margin-bottom: 10px; font-size: 16px; }
+    .faq-item p { font-size: 15px; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--ctfl-text);
+      padding: 48px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-left {
+      font-size: 14px; font-weight: 700; color: var(--ctfl-white);
+    }
+    .footer-right {
+      font-size: 13px; color: rgba(255,255,255,0.4);
+    }
+    .footer-right a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .footer-right a:hover { color: var(--ctfl-white); }
+
+    /* ── Loading state ── */
+    .loading { opacity: 0.35; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <img src="./logo.png" alt="Contentful" class="nav-logo" />
+      <div class="nav-divider"></div>
+      <span class="nav-app">Highlight Reviews</span>
+    </div>
+    <span class="nav-badge">App Demo</span>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero" id="hero-section" data-contentful-field-id="headline">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Contentful App</div>
+      <h1 id="hero-headline" class="loading">Loading…</h1>
+      <p id="hero-subheadline" class="loading">Loading…</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#how-it-works">See how it works</a>
+        <a class="btn btn-secondary" href="#faq">FAQ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="section">
+    <div class="section-inner" id="features-section" data-contentful-field-id="featuresHeading">
+      <div class="section-label">Features</div>
+      <h2 id="features-heading" class="loading"> </h2>
+      <p class="section-desc" id="features-desc"> </p>
+      <div class="features" id="features-grid">
+        <!-- injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="section section-alt" id="how-it-works">
+    <div class="section-inner" id="how-it-works-section" data-contentful-field-id="stepsHeading">
+      <div class="section-label">How it works</div>
+      <h2 id="steps-heading" class="loading"> </h2>
+      <p class="section-desc" id="steps-desc"> </p>
+      <div class="steps" id="steps-list">
+        <!-- injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section" id="faq">
+    <div class="section-inner" id="faq-section" data-contentful-field-id="faqHeading">
+      <div class="section-label">FAQ</div>
+      <h2 id="faq-heading" class="loading"> </h2>
+      <div class="faq-list" id="faq-list">
+        <!-- injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-left"><img src="./logo.png" alt="Contentful" style="height:28px;width:auto;filter:brightness(0) invert(1);opacity:0.8;" /></div>
+    <div class="footer-right">
+      Built with the <a href="https://www.contentful.com/developers/docs/extensibility/app-framework/" target="_blank">Contentful App Framework</a>.
+      Content served via the Contentful Delivery API.
+    </div>
+  </footer>
+
+  <script>
+    const SPACE_ID   = '__SPACE_ID__';
+    const ENV_ID     = '__ENV_ID__';
+    const CDA_TOKEN  = '__CDA_TOKEN__';
+    const API_BASE   = '__API_BASE__';
+
+    window.HighlightReviewsConfig = {
+      apiBase: API_BASE,
+      spaceId: SPACE_ID,
+      environmentId: ENV_ID,
+      enableTasks: true,
+      enableComments: true,
+    };
+
+    async function fetchEntries(contentType) {
+      const r = await fetch(
+        `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/${ENV_ID}/entries?content_type=${contentType}&access_token=${CDA_TOKEN}`
+      );
+      const data = await r.json();
+      return data.items || [];
+    }
+
+    async function render() {
+      try {
+        const [heros, featureBlocks, steps, faqs, pages] = await Promise.all([
+          fetchEntries('hrHero'),
+          fetchEntries('hrFeatureBlock'),
+          fetchEntries('hrStep'),
+          fetchEntries('hrFaq'),
+          fetchEntries('hrPage'),
+        ]);
+
+        const hero = heros[0];
+        if (hero) {
+          window.HighlightReviewsConfig.defaultEntryId = hero.sys.id;
+          const heroEl = document.getElementById('hero-section');
+          if (heroEl) heroEl.setAttribute('data-contentful-entry-id', hero.sys.id);
+
+          const h = document.getElementById('hero-headline');
+          h.textContent = hero.fields.headline || 'Highlight Reviews';
+          h.classList.remove('loading');
+
+          const sub = document.getElementById('hero-subheadline');
+          sub.textContent = hero.fields.subheadline || '';
+          sub.classList.remove('loading');
+        }
+
+        // Page-level section headings
+        const page = pages[0];
+        if (page) {
+          const pf = page.fields;
+
+          const featuresSection = document.getElementById('features-section');
+          if (featuresSection) featuresSection.setAttribute('data-contentful-entry-id', page.sys.id);
+          const featH = document.getElementById('features-heading');
+          featH.textContent = pf.featuresHeading || '';
+          featH.classList.remove('loading');
+          const featD = document.getElementById('features-desc');
+          featD.textContent = pf.featuresDescription || '';
+
+          const stepsSection = document.getElementById('how-it-works-section');
+          if (stepsSection) stepsSection.setAttribute('data-contentful-entry-id', page.sys.id);
+          const stepsH = document.getElementById('steps-heading');
+          stepsH.textContent = pf.stepsHeading || '';
+          stepsH.classList.remove('loading');
+          const stepsD = document.getElementById('steps-desc');
+          stepsD.textContent = pf.stepsDescription || '';
+
+          const faqSection = document.getElementById('faq-section');
+          if (faqSection) faqSection.setAttribute('data-contentful-entry-id', page.sys.id);
+          const faqH = document.getElementById('faq-heading');
+          faqH.textContent = pf.faqHeading || '';
+          faqH.classList.remove('loading');
+        }
+
+        const grid = document.getElementById('features-grid');
+        grid.innerHTML = '';
+        featureBlocks.sort((a, b) => (a.fields.order || 0) - (b.fields.order || 0))
+          .forEach(f => {
+            grid.innerHTML += `
+              <div class="feature-card" data-contentful-entry-id="${f.sys.id}" data-contentful-field-id="title">
+                <div class="feature-icon">${f.fields.icon || '✦'}</div>
+                <h3>${f.fields.title || ''}</h3>
+                <p>${f.fields.description || ''}</p>
+              </div>`;
+          });
+
+        const stepsList = document.getElementById('steps-list');
+        stepsList.innerHTML = '';
+        const howItWorksEl = document.getElementById('how-it-works-section');
+        if (steps[0] && howItWorksEl) {
+          howItWorksEl.setAttribute('data-contentful-entry-id', steps[0].sys.id);
+        }
+        steps.sort((a, b) => (a.fields.order || 0) - (b.fields.order || 0))
+          .forEach(s => {
+            stepsList.innerHTML += `
+              <div class="step" data-contentful-entry-id="${s.sys.id}" data-contentful-field-id="title">
+                <div class="step-num"></div>
+                <div class="step-body">
+                  <h3>${s.fields.title || ''}</h3>
+                  <p>${s.fields.description || ''}</p>
+                </div>
+              </div>`;
+          });
+
+        const faqList = document.getElementById('faq-list');
+        faqList.innerHTML = '';
+        faqs.sort((a, b) => (a.fields.order || 0) - (b.fields.order || 0))
+          .forEach(f => {
+            faqList.innerHTML += `
+              <div class="faq-item" data-contentful-entry-id="${f.sys.id}" data-contentful-field-id="question">
+                <h3>${f.fields.question || ''}</h3>
+                <p>${f.fields.answer || ''}</p>
+              </div>`;
+          });
+
+      } catch (e) {
+        console.error('Highlight Reviews demo: failed to fetch content', e);
+      }
+    }
+
+    render();
+  </script>
+
+  <script src="./overlay.js"></script>
+
+</body>
+</html>
