@@ -31,7 +31,7 @@
     "upload": "contentful-app-scripts upload --bundle-dir ./build",
     "upload-ci": "contentful-app-scripts upload --ci --bundle-dir ./build --organization-id $CONTENTFUL_ORG_ID --definition-id $CONTENTFUL_APP_DEF_ID --token $CONTENTFUL_ACCESS_TOKEN",
     "setup": "npx tsx demo/scripts/setup.ts",
-    "build:overlay": "npm run build --workspace=packages/overlay",
+    "build:overlay": "npm run build --workspace=packages/overlay && cp packages/overlay/dist/overlay.iife.js server/public/overlay.js",
     "build:next": "npm run build --workspace=packages/next",
     "build:packages": "npm run build:overlay && npm run build:next",
     "build:demo": "npm run build:packages && npx tsx demo/scripts/build-demo.ts",
