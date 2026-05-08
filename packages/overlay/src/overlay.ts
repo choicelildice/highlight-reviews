@@ -152,10 +152,16 @@ function createPopover(
     font-size: 13px;
   `;
 
-  const top = Math.min(anchorRect.bottom + 8, window.innerHeight - 280);
+  const POPOVER_HEIGHT = 280;
+  const MARGIN = 8;
+  const spaceBelow = window.innerHeight - anchorRect.bottom;
+  const spaceAbove = anchorRect.top;
+  const top = spaceBelow >= POPOVER_HEIGHT + MARGIN || spaceBelow >= spaceAbove
+    ? Math.min(anchorRect.bottom + MARGIN, window.innerHeight - POPOVER_HEIGHT - MARGIN)
+    : anchorRect.top - POPOVER_HEIGHT - MARGIN;
   const left = Math.min(anchorRect.left, window.innerWidth - 316);
-  pop.style.top = `${top}px`;
-  pop.style.left = `${left}px`;
+  pop.style.top = `${Math.max(MARGIN, top)}px`;
+  pop.style.left = `${Math.max(MARGIN, left)}px`;
 
   const assigneeOptions = users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
 
