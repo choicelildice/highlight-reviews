@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { handleUsers } from '../../packages/next/src/handlers/users';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const origin = process.env.ALLOWED_ORIGIN || '*';
@@ -13,23 +14,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Server is not configured' });
   }
 
-  try {
-    const r = await fetch(
-      `https://api.contentful.com/spaces/${process.env.SPACE_ID}/users?limit=100`,
-      { headers: { Authorization: `Bearer ${process.env.CMA_TOKEN}` } }
-    );
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.message || r.statusText);
+  const { status, body } = await handleUsers({
+    cmaToken: process.env.CMA_TOKEN,
+    spaceId: process.env.SPACE_ID,
+  });
 
-    const users = (data.items || []).map((u: any) => ({
-      id: u.sys.id,
-      name: [u.firstName, u.lastName].filter(Boolean).join(' ') || u.email,
-      email: u.email,
-    }));
-
-    return res.status(200).json(users);
-  } catch (e: any) {
-    console.error('Users fetch error:', e.message);
-    return res.status(502).json({ error: e.message });
-  }
+  return res.status(status).json(body);
 }

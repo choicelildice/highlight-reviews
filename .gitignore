@@ -4,6 +4,7 @@
 node_modules
 build
 dist
+packages/*/dist
 server/public/index.html
 server/public/overlay.js
 server/public/*.bak

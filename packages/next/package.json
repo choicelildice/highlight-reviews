@@ -1,0 +1,30 @@
+{
+  "name": "@highlight-reviews/next",
+  "version": "0.1.0",
+  "description": "Next.js API route handlers for Highlight Reviews",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --watch"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "4.9.5"
+  },
+  "peerDependencies": {
+    "next": ">=13.0.0"
+  }
+}

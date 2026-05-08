@@ -2,6 +2,9 @@
   "name": "highlight-reviews",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "@contentful/app-sdk": "^4.29.1",
     "@contentful/f36-components": "4.81.1",
@@ -27,9 +30,11 @@
     "add-locations": "contentful-app-scripts add-locations",
     "upload": "contentful-app-scripts upload --bundle-dir ./build",
     "upload-ci": "contentful-app-scripts upload --ci --bundle-dir ./build --organization-id $CONTENTFUL_ORG_ID --definition-id $CONTENTFUL_APP_DEF_ID --token $CONTENTFUL_ACCESS_TOKEN",
-    "setup": "npx tsx scripts/setup.ts",
-    "build:overlay": "cd overlay && npm run build",
-    "build:demo": "npm run build:overlay && npx tsx scripts/build-demo.ts",
+    "setup": "npx tsx demo/scripts/setup.ts",
+    "build:overlay": "npm run build --workspace=packages/overlay",
+    "build:next": "npm run build --workspace=packages/next",
+    "build:packages": "npm run build:overlay && npm run build:next",
+    "build:demo": "npm run build:packages && npx tsx demo/scripts/build-demo.ts",
     "build:server": "npm run build:demo"
   },
   "eslintConfig": {
