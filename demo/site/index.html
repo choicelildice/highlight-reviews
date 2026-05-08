@@ -211,11 +211,11 @@
   </nav>
 
   <!-- Hero -->
-  <div class="hero" id="hero-section" data-contentful-field-id="headline">
+  <div class="hero" id="hero-section">
     <div class="hero-inner">
       <div class="hero-eyebrow">Contentful App</div>
-      <h1 id="hero-headline" class="loading">Loading…</h1>
-      <p id="hero-subheadline" class="loading">Loading…</p>
+      <h1 id="hero-headline" class="loading" data-contentful-field-id="headline">Loading…</h1>
+      <p id="hero-subheadline" class="loading" data-contentful-field-id="subheadline">Loading…</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#how-it-works">See how it works</a>
         <a class="btn btn-secondary" href="#faq">FAQ</a>
@@ -225,10 +225,10 @@
 
   <!-- Features -->
   <div class="section">
-    <div class="section-inner" id="features-section" data-contentful-field-id="featuresHeading">
+    <div class="section-inner" id="features-section">
       <div class="section-label">Features</div>
-      <h2 id="features-heading" class="loading"> </h2>
-      <p class="section-desc" id="features-desc"> </p>
+      <h2 id="features-heading" class="loading" data-contentful-field-id="featuresHeading"> </h2>
+      <p class="section-desc" id="features-desc" data-contentful-field-id="featuresDescription"> </p>
       <div class="features" id="features-grid">
         <!-- injected by JS -->
       </div>
@@ -237,10 +237,10 @@
 
   <!-- How it works -->
   <div class="section section-alt" id="how-it-works">
-    <div class="section-inner" id="how-it-works-section" data-contentful-field-id="stepsHeading">
+    <div class="section-inner" id="how-it-works-section">
       <div class="section-label">How it works</div>
-      <h2 id="steps-heading" class="loading"> </h2>
-      <p class="section-desc" id="steps-desc"> </p>
+      <h2 id="steps-heading" class="loading" data-contentful-field-id="stepsHeading"> </h2>
+      <p class="section-desc" id="steps-desc" data-contentful-field-id="stepsDescription"> </p>
       <div class="steps" id="steps-list">
         <!-- injected by JS -->
       </div>
@@ -249,9 +249,9 @@
 
   <!-- FAQ -->
   <div class="section" id="faq">
-    <div class="section-inner" id="faq-section" data-contentful-field-id="faqHeading">
+    <div class="section-inner" id="faq-section">
       <div class="section-label">FAQ</div>
-      <h2 id="faq-heading" class="loading"> </h2>
+      <h2 id="faq-heading" class="loading" data-contentful-field-id="faqHeading"> </h2>
       <div class="faq-list" id="faq-list">
         <!-- injected by JS -->
       </div>
@@ -346,10 +346,10 @@
         featureBlocks.sort((a, b) => (a.fields.order || 0) - (b.fields.order || 0))
           .forEach(f => {
             grid.innerHTML += `
-              <div class="feature-card" data-contentful-entry-id="${f.sys.id}" data-contentful-field-id="title">
+              <div class="feature-card" data-contentful-entry-id="${f.sys.id}">
                 <div class="feature-icon">${f.fields.icon || '✦'}</div>
-                <h3>${f.fields.title || ''}</h3>
-                <p>${f.fields.description || ''}</p>
+                <h3 data-contentful-field-id="title">${f.fields.title || ''}</h3>
+                <p data-contentful-field-id="description">${f.fields.description || ''}</p>
               </div>`;
           });
 
@@ -362,11 +362,11 @@
         steps.sort((a, b) => (a.fields.order || 0) - (b.fields.order || 0))
           .forEach(s => {
             stepsList.innerHTML += `
-              <div class="step" data-contentful-entry-id="${s.sys.id}" data-contentful-field-id="title">
+              <div class="step" data-contentful-entry-id="${s.sys.id}">
                 <div class="step-num"></div>
                 <div class="step-body">
-                  <h3>${s.fields.title || ''}</h3>
-                  <p>${s.fields.description || ''}</p>
+                  <h3 data-contentful-field-id="title">${s.fields.title || ''}</h3>
+                  <p data-contentful-field-id="description">${s.fields.description || ''}</p>
                 </div>
               </div>`;
           });
@@ -376,9 +376,9 @@
         faqs.sort((a, b) => (a.fields.order || 0) - (b.fields.order || 0))
           .forEach(f => {
             faqList.innerHTML += `
-              <div class="faq-item" data-contentful-entry-id="${f.sys.id}" data-contentful-field-id="question">
-                <h3>${f.fields.question || ''}</h3>
-                <p>${f.fields.answer || ''}</p>
+              <div class="faq-item" data-contentful-entry-id="${f.sys.id}">
+                <h3 data-contentful-field-id="question">${f.fields.question || ''}</h3>
+                <p data-contentful-field-id="answer">${f.fields.answer || ''}</p>
               </div>`;
           });
 
