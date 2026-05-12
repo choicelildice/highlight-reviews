@@ -19,8 +19,6 @@
 declare global {
   interface Window {
     HighlightReviewsConfig?: HighlightReviewsConfig;
-    contentfulLivePreviewInitialized?: boolean;
-    __CF_PREVIEW_DATA__?: Record<string, unknown>;
   }
 }
 
@@ -53,11 +51,7 @@ interface SpaceUser {
   email: string;
 }
 
-// ── SDK detection ────────────────────────────────────────────────────────────
-
-function hasLivePreviewSdk(): boolean {
-  return !!(window.contentfulLivePreviewInitialized || window.__CF_PREVIEW_DATA__);
-}
+// ── Entry / field from Live Preview DOM (data-* on preview HTML) ─────────────
 
 function entryIdFromSdkNode(node: Node): string | null {
   let el: Element | null = node.nodeType === Node.ELEMENT_NODE
