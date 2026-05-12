@@ -23,18 +23,24 @@ async function loadOrPrompt(): Promise<Record<string, string>> {
       const [k, ...rest] = line.split('=');
       if (k && rest.length) env[k.trim()] = rest.join('=').trim();
     });
-    const required = ['SPACE_ID', 'ENV_ID', 'CDA_TOKEN', 'API_BASE'];
+    const required = ['SPACE_ID', 'ENV_ID', 'CDA_TOKEN', 'API_BASE', 'ENABLE_TASKS', 'ENABLE_COMMENTS', 'SHOW_ASSIGNEE'];
     const missing = required.filter((k) => !env[k]);
     if (!missing.length) return env;
     console.log(`Missing from .env.demo: ${missing.join(', ')} — please fill them in.\n`);
   }
 
   console.log('No .env.demo found. Enter the values for the demo site:\n');
+  const enableTasks    = (await ask('Enable tasks? [Y/n]: ')).toLowerCase();
+  const enableComments = (await ask('Enable comments? [Y/n]: ')).toLowerCase();
+  const showAssignee   = (await ask('Show assignee dropdown on tasks? [Y/n]: ')).toLowerCase();
   const env: Record<string, string> = {
-    SPACE_ID:  await ask('Space ID: '),
-    ENV_ID:    (await ask('Environment ID [master]: ')) || 'master',
-    CDA_TOKEN: await ask('CDA Token (Delivery API): '),
-    API_BASE:  await ask('API base URL (Vercel deployment URL): '),
+    SPACE_ID:        await ask('Space ID: '),
+    ENV_ID:          (await ask('Environment ID [master]: ')) || 'master',
+    CDA_TOKEN:       await ask('CDA Token (Delivery API): '),
+    API_BASE:        await ask('API base URL (Vercel deployment URL): '),
+    ENABLE_TASKS:    enableTasks === 'n' ? 'false' : 'true',
+    ENABLE_COMMENTS: enableComments === 'n' ? 'false' : 'true',
+    SHOW_ASSIGNEE:   showAssignee === 'n' ? 'false' : 'true',
   };
   rl.close();
 
@@ -54,7 +60,10 @@ async function main() {
     .replace(/__SPACE_ID__/g, env.SPACE_ID)
     .replace(/__ENV_ID__/g, env.ENV_ID)
     .replace(/__CDA_TOKEN__/g, env.CDA_TOKEN)
-    .replace(/__API_BASE__/g, env.API_BASE);
+    .replace(/__API_BASE__/g, env.API_BASE)
+    .replace(/__ENABLE_TASKS__/g, env.ENABLE_TASKS)
+    .replace(/__ENABLE_COMMENTS__/g, env.ENABLE_COMMENTS)
+    .replace(/__SHOW_ASSIGNEE__/g, env.SHOW_ASSIGNEE);
 
   const publicDir = path.join(root, 'server', 'public');
   fs.mkdirSync(publicDir, { recursive: true });

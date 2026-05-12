@@ -249,12 +249,17 @@
     const CDA_TOKEN  = '__CDA_TOKEN__';
     const API_BASE   = '__API_BASE__';
 
+    const ENABLE_TASKS    = __ENABLE_TASKS__;
+    const ENABLE_COMMENTS = __ENABLE_COMMENTS__;
+    const SHOW_ASSIGNEE   = __SHOW_ASSIGNEE__;
+
     window.HighlightReviewsConfig = {
       apiBase: API_BASE,
       spaceId: SPACE_ID,
       environmentId: ENV_ID,
-      enableTasks: true,
-      enableComments: true,
+      enableTasks: ENABLE_TASKS,
+      enableComments: ENABLE_COMMENTS,
+      showAssignee: SHOW_ASSIGNEE,
     };
 
     async function fetchEntries(contentType) {

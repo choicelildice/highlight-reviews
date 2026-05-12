@@ -134,7 +134,7 @@ const SEED_ENTRIES = [
       title: { 'en-US': 'Tasks and Comments' },
       description: {
         'en-US':
-          'Configure whether stakeholders can create assignable Tasks, threaded Comments, or both — from the app config screen.',
+          'Configure whether stakeholders can create assignable Tasks, threaded Comments, or both — set during setup.',
       },
       icon: { 'en-US': '✅' },
       order: { 'en-US': 2 },
@@ -214,7 +214,7 @@ const SEED_ENTRIES = [
       question: { 'en-US': "What's the difference between Tasks and Comments?" },
       answer: {
         'en-US':
-          'Tasks are assignable and resolvable — best for actionable copy changes. Comments are threaded discussion — best for questions or general notes. You can enable one or both from the app configuration screen.',
+          'Tasks are assignable and resolvable — best for actionable copy changes. Comments are threaded discussion — best for questions or general notes. You can enable one or both during setup.',
       },
       order: { 'en-US': 2 },
     },
@@ -236,7 +236,7 @@ const SEED_ENTRIES = [
       question: { 'en-US': 'Where do I find the overlay script?' },
       answer: {
         'en-US':
-          "After installing the app, copy the snippet from the app's configuration screen and add it to your preview site's HTML. Set window.HighlightReviewsConfig before the script tag.",
+          "Add the overlay script to your preview site's HTML and set window.HighlightReviewsConfig before the script tag. See the README for the full snippet.",
       },
       order: { 'en-US': 4 },
     },
@@ -255,6 +255,12 @@ async function main() {
   const envId = (await ask('Environment ID [master]: ')) || 'master';
   const cdaToken = await ask('CDA Token (Delivery API, for demo site): ');
   const apiBase = (await ask('API base URL for overlay (leave blank to fill in later): ')) || 'http://localhost:3001';
+  const enableTasksRaw    = (await ask('Enable tasks? [Y/n]: ')).toLowerCase();
+  const enableCommentsRaw = (await ask('Enable comments? [Y/n]: ')).toLowerCase();
+  const showAssigneeRaw   = (await ask('Show assignee dropdown on tasks? [Y/n]: ')).toLowerCase();
+  const enableTasks    = enableTasksRaw === 'n' ? 'false' : 'true';
+  const enableComments = enableCommentsRaw === 'n' ? 'false' : 'true';
+  const showAssignee   = showAssigneeRaw === 'n' ? 'false' : 'true';
 
   rl.close();
 
@@ -386,6 +392,9 @@ async function main() {
     `CDA_TOKEN=${cdaToken}`,
     `API_BASE=${apiBase}`,
     `PAGE_ENTRY_ID=${ids['hrPage']?.[0] || ''}`,
+    `ENABLE_TASKS=${enableTasks}`,
+    `ENABLE_COMMENTS=${enableComments}`,
+    `SHOW_ASSIGNEE=${showAssignee}`,
   ].join('\n');
   const envPath = path.join(__dirname, '..', '.env.demo');
   fs.writeFileSync(envPath, envDemo);

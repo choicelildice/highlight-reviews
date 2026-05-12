@@ -28,6 +28,7 @@ export interface HighlightReviewsConfig {
   environmentId?: string;
   enableTasks?: boolean;
   enableComments?: boolean;
+  showAssignee?: boolean;
   reviewerName?: string;
   defaultEntryId?: string;
   locale?: string;
@@ -196,7 +197,7 @@ function createPopover(
         outline:none;
       " />
     </div>
-    ${config.enableTasks && users.length ? `
+    ${config.enableTasks && config.showAssignee !== false && users.length ? `
     <div id="hr-assignee-row" style="margin-top:8px;">
       <label style="font-size:11px;color:#888;display:block;margin-bottom:4px;">Assign to (for tasks)</label>
       <select id="hr-assignee" style="
@@ -301,7 +302,7 @@ function init(config: HighlightReviewsConfig) {
   if (!config.enableTasks && !config.enableComments) return;
 
   // Pre-fetch users so the dropdown is ready when the popover opens
-  let usersPromise: Promise<SpaceUser[]> = config.enableTasks
+  let usersPromise: Promise<SpaceUser[]> = config.enableTasks && config.showAssignee !== false
     ? fetchUsers(config)
     : Promise.resolve([]);
 
