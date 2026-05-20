@@ -283,13 +283,17 @@ function createPopover(
   });
 
   setTimeout(() => {
-    document.addEventListener('mousedown', outsideHandler, { once: true });
+    document.addEventListener('mousedown', outsideHandler);
   }, 50);
 }
 
 function outsideHandler(e: MouseEvent) {
   const pop = document.getElementById('hr-popover');
-  if (pop && !pop.contains(e.target as Node)) removePopover();
+  if (!pop) {
+    document.removeEventListener('mousedown', outsideHandler);
+    return;
+  }
+  if (!pop.contains(e.target as Node)) removePopover();
 }
 
 function removePopover() {
