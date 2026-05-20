@@ -283,17 +283,24 @@ function createPopover(
   });
 
   setTimeout(() => {
-    document.addEventListener('mousedown', outsideHandler);
+    document.addEventListener('mouseup', outsideHandler);
   }, 50);
 }
 
 function outsideHandler(e: MouseEvent) {
   const pop = document.getElementById('hr-popover');
   if (!pop) {
-    document.removeEventListener('mousedown', outsideHandler);
+    document.removeEventListener('mouseup', outsideHandler);
     return;
   }
-  if (!pop.contains(e.target as Node)) removePopover();
+  if (pop.contains(e.target as Node)) return;
+
+  // Only close if the user didn't just make a new selection outside the popup
+  const sel = window.getSelection();
+  if (sel && !sel.isCollapsed) return;
+
+  removePopover();
+  document.removeEventListener('mouseup', outsideHandler);
 }
 
 function removePopover() {
