@@ -2,6 +2,8 @@
 
 A Contentful sample app that lets stakeholders highlight text on a preview site and leave feedback — as Tasks or Comments on the corresponding Contentful entry — without needing a Contentful login.
 
+![Highlight Reviews demo](demo.gif)
+
 > **Disclaimer:** Contentful provides this sample code solely to demonstrate a technical scenario. Any and all sample code provided by Contentful is not intended for production use. Contentful is not responsible for maintaining or supporting this sample code after it has been provided to you.
 
 ---
