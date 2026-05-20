@@ -306,7 +306,10 @@ function init(config: HighlightReviewsConfig) {
     ? fetchUsers(config)
     : Promise.resolve([]);
 
-  document.addEventListener('mouseup', async () => {
+  document.addEventListener('mouseup', async (e) => {
+    const popover = document.getElementById('hr-popover');
+    if (popover && popover.contains(e.target as Node)) return;
+
     const sel = window.getSelection();
     if (!sel || sel.isCollapsed) return;
 
