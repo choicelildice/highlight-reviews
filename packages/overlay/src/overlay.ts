@@ -282,25 +282,6 @@ function createPopover(
     if (btn) submit(btn.dataset.type as 'task' | 'comment');
   });
 
-  setTimeout(() => {
-    document.addEventListener('mouseup', outsideHandler);
-  }, 50);
-}
-
-function outsideHandler(e: MouseEvent) {
-  const pop = document.getElementById('hr-popover');
-  if (!pop) {
-    document.removeEventListener('mouseup', outsideHandler);
-    return;
-  }
-  if (pop.contains(e.target as Node)) return;
-
-  // Only close if the user didn't just make a new selection outside the popup
-  const sel = window.getSelection();
-  if (sel && !sel.isCollapsed) return;
-
-  removePopover();
-  document.removeEventListener('mouseup', outsideHandler);
 }
 
 function removePopover() {
@@ -322,6 +303,13 @@ function init(config: HighlightReviewsConfig) {
     if (popover && popover.contains(e.target as Node)) return;
 
     const sel = window.getSelection();
+
+    // Close popup on outside click with no new selection
+    if (popover && (!sel || sel.isCollapsed)) {
+      removePopover();
+      return;
+    }
+
     if (!sel || sel.isCollapsed) return;
 
     const quote = sel.toString().trim();
