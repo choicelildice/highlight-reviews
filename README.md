@@ -6,6 +6,8 @@ A Contentful sample app that lets stakeholders highlight text on a preview site 
 
 > **Disclaimer:** Contentful provides this sample code solely to demonstrate a technical scenario. Any and all sample code provided by Contentful is not intended for production use. Contentful is not responsible for maintaining or supporting this sample code after it has been provided to you.
 
+> **Trust model:** This tool is designed for use in a **trusted preview environment** — one where everyone with the preview URL is already a trusted stakeholder. The proxy does not authenticate reviewers or restrict which entries they can annotate. Anyone who can reach the proxy URL can create tasks or comments on any entry in your space. Do not use this in contexts where the preview URL may be accessed by untrusted parties.
+
 ---
 
 ## How it works
