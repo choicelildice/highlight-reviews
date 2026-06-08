@@ -51,6 +51,8 @@ Click the button below to deploy the API proxy to Vercel. You'll be prompted for
 | `ENVIRONMENT_ID` | Environment ID (default: `master`)                                            |
 | `ALLOWED_ORIGIN` | Your preview site's origin, e.g. `https://preview.mysite.com` (or `*`)       |
 
+> **Note on `CMA_TOKEN`:** Personal Access Tokens are tied to the Contentful user who creates them. If that user is removed from the space, the proxy will stop working. Consider creating a dedicated Contentful user (e.g. `highlight-reviews-bot@yourorg.com`) with the minimum required role so that the token's lifecycle isn't tied to any individual team member.
+
 **Step 2: Add the overlay to your site**
 
 ```html
@@ -152,6 +154,19 @@ The [Contentful Live Preview SDK](https://www.contentful.com/developers/docs/too
 | `locale`         | `string`  | `"en-US"`     | Locale for field-level comment pinning                             |
 | `reviewerName`   | `string`  | —             | Pre-fill the reviewer name, hiding the name input                  |
 | `defaultEntryId` | `string`  | —             | Fallback entry ID when DOM attributes and URL lookup both fail     |
+
+---
+
+## Security hardening
+
+The proxy is designed to be deployed in a trusted preview environment, but two endpoints warrant attention before sharing the preview URL publicly:
+
+**`/api/users`** — Returns the names and email addresses of all Contentful space members (used to populate the task assignee dropdown). Restrict or disable this endpoint if you don't need the assignee feature:
+
+- Set `showAssignee: false` in the overlay config to skip the dropdown entirely — the endpoint will never be called.
+- If you do need it, add a shared secret: bake a token into the overlay config at build time and validate it server-side before proxying the CMA call.
+
+**Rate limiting** — The default in-memory rate limiter resets on each serverless cold start and does not coordinate across concurrent instances. For a public-facing deployment, replace it with a persistent store (e.g. [Vercel KV](https://vercel.com/docs/storage/vercel-kv)) so limits are enforced globally.
 
 ---
 
